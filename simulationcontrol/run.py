@@ -52,7 +52,7 @@ def prev_run_cleanup():
             os.remove(file_path)
 
     for f in os.listdir(BENCHMARKS):
-        if ('output.' in f) or ('.264' in f) or ('poses.' in f) :
+        if ('output.' in f) or ('.264' in f) or ('poses.' in f) or ('app_mapping' in f) :
             os.remove(os.path.join(BENCHMARKS, f))
 
 def save_output(base_configuration, benchmark, console_output, cpistack, started, ended, label: str):
@@ -100,6 +100,8 @@ def save_output(base_configuration, benchmark, console_output, cpistack, started
         elif 'poses.' in f:
             shutil.copy(os.path.join(BENCHMARKS, f), directory)
         elif '.264' in f:
+            shutil.copy(os.path.join(BENCHMARKS, f), directory)
+        elif 'app_mapping.' in f:
             shutil.copy(os.path.join(BENCHMARKS, f), directory)
 
     create_plots(run)
@@ -256,8 +258,8 @@ def single_program_perforation_rate():
     before = time.monotonic()
 
     for benchmark in (  
-                        'parsec-blackscholes',
-                        # 'parsec-bodytrack',
+                        # 'parsec-blackscholes',
+                        'parsec-bodytrack',
                         # 'parsec-canneal', 
                         # 'parsec-streamcluster',
                         # 'parsec-swaptions',
@@ -268,7 +270,7 @@ def single_program_perforation_rate():
         freq = 4 
         parallelism = 4
             
-        run(label=("exp_pr_single"), 
+        run(label='motiv_exmpl',
             base_configuration=['{:.1f}GHz'.format(freq), 'maxFreq', 'slowDVFS'], 
             benchmark=get_instance(benchmark, parallelism, input_set='small'))
     

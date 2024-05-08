@@ -1,3 +1,4 @@
+import os
 import sim
 
 pr = 0
@@ -13,8 +14,8 @@ class Perf:
 
         sim.util.register_command(0x126, Perf.hook_set_app)
 
-        for app in range(0,10):
-            sim.stats.register('scheduler', app, 'app_code', self.get_app_code)
+        # for app in range(0,10):
+        #     sim.stats.register('scheduler', app, 'app_code', self.get_app_code)
 
         if(pr != 0):
             sim.util.register_command(0x125, Perf.hook_perforation_rate_stub)
@@ -29,13 +30,14 @@ class Perf:
 
         return (a, b)
 
-    def get_app_code(self, objectName, index, metricName):
-        global app_map
-        for key, value in app_map.items():
-            if key == index:
-                return value
+    # # maybe write it to a file?
+    # def get_app_code(self, objectName, index, metricName): 
+    #     global app_map
+    #     for key, value in app_map.items():
+    #         if key == index:
+    #             return long(value)
             
-        return 0 #long(0)
+    #     return long(0)
 
     @staticmethod
     def hook_set_app(core, id):
@@ -43,6 +45,11 @@ class Perf:
 
         app_id, app_code = Perf.decomp_value(id)
         app_map[app_id] = app_code
+        
+        results_path = os.getcwd()
+        file = open(os.path.join(results_path, 'app_mapping.txt'), "w")
+        file.write("{}, {}".format(app_id, app_code))
+        file.close()
 
         print("[MAGIC]: setting app: {} to be an instance of {}".format(app_id, app_code))
 
