@@ -301,7 +301,7 @@ def multi_program_perforation_rate():
             benchmarks = benchmarks + get_instance(benchmark, parallel, input_set)
 
     run(label="dev_multi_prog", 
-        base_configuration=['{:.1f}GHz'.format(freqency), 'maxFreq', 'slowDVFS'],
+        base_configuration=['{:.1f}GHz'.format(freqency), 'maxFreq'], # 'slowDVFS'
         benchmark=benchmarks)
 
 
